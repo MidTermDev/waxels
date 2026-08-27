@@ -87,6 +87,14 @@ export default function Localnet() {
   const [receipts, setReceipts] = useState<Receipts | null>(null);
   const [state, setState] = useState<LiveState | null>(null);
   const [offline, setOffline] = useState(false);
+  const [selected, setSelected] = useState<Receipt | null>(null);
+
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setSelected(null);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [selected]);
 
   useEffect(() => {
     fetch('/receipts.json').then((r) => r.json()).then(setReceipts).catch(() => {});
@@ -190,62 +198,120 @@ export default function Localnet() {
           </span>
         </h2>
         <p>
-          Captured from this validator right after the demo run
-          {receipts ? ` (${new Date(receipts.capturedAt).toUTCString()})` : ''}. Program:{' '}
-          <code className="pill">{receipts?.programId}</code> · feature gate{' '}
-          <code className="pill">{FEATURE_GATE}</code> —{' '}
-          {receipts?.cluster.featureStatus ?? 'active since slot 0'}.
+          Every drawing below went on chain in <b>one v1 transaction</b>.{' '}
+          <b>Click a drawing</b> to see its exact receipt — signature, wire
+          size, and what each instruction did.
         </p>
-        <div style={{ display: 'grid', gap: '1.2rem' }}>
-          {(receipts?.steps ?? []).map((s, i) => {
+        <div className="tx-grid">
+          {(receipts?.steps ?? []).map((s) => {
             const [emoji, label] = KIND_LABEL[s.kind] ?? ['🖍️', s.kind];
             return (
-              <div className={`card ${i % 2 ? 'tilt-r' : 'tilt-l'}`} key={s.signature}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <b style={{ fontSize: '1.05rem' }}>
-                    {emoji} {label}
-                    {s.waxel ? <> — “{s.waxel.name}”</> : null}
-                  </b>
-                  <span style={{ opacity: 0.7, fontSize: '0.85rem' }}>
-                    slot {s.slot.toLocaleString()}
-                    {s.blockTime ? ` · ${new Date(s.blockTime * 1000).toUTCString()}` : ''}
+              <button className="tx-thumb" key={s.signature} onClick={() => setSelected(s)}>
+                {s.waxel ? (
+                  <img src={`/chain/${s.waxel.file}.png`} alt={s.waxel.name} />
+                ) : (
+                  <span className="emoji-tile">{emoji}</span>
+                )}
+                <span className="cap">
+                  <b>{s.waxel ? `“${s.waxel.name}”` : label}</b>
+                  <br />
+                  <span className="peek">
+                    {s.wireBytes.toLocaleString()} B tx · view receipt →
                   </span>
-                </div>
-                <p style={{ margin: '0.4rem 0', fontSize: '0.9rem' }}>
-                  <code className="pill">{short(s.signature)}</code> ·{' '}
-                  <b>version {s.version}</b> (wire prefix{' '}
-                  <code className="pill">{s.versionPrefix}</code>) ·{' '}
-                  <b>{s.wireBytes.toLocaleString()} bytes</b> of 4,096 ·{' '}
-                  {s.computeUnits?.toLocaleString()} CU · fee{' '}
-                  {(s.feeLamports / 1e9).toFixed(6)} SOL
-                </p>
-                <table style={{ fontSize: '0.9rem' }}>
-                  <tbody>
-                    {s.instructions.map((ix, j) => (
-                      <tr key={j}>
-                        <td style={{ whiteSpace: 'nowrap' }}>
-                          <code className="pill">
-                            {ix.name}
-                            {ix.imageBytes ? `(${ix.imageBytes.toLocaleString()} bytes)` : ''}
-                          </code>
-                        </td>
-                        <td>{IX_EXPLAIN[ix.name] ?? ''}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-                {s.kind === 'mint' && s.instructions.length === 3 ? (
-                  <p style={{ margin: '0.5rem 0 0', fontSize: '0.85rem', opacity: 0.85 }}>
-                    ☝️ all three in <b>one transaction</b> — this is the thing
-                    that was impossible before SIMD-0385.
-                  </p>
-                ) : null}
-              </div>
+                </span>
+              </button>
             );
           })}
           {!receipts && <p>loading receipts…</p>}
         </div>
       </section>
+
+      {selected ? (
+        <div className="overlay" onClick={() => setSelected(null)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <button className="close" onClick={() => setSelected(null)} aria-label="close">
+              ✕
+            </button>
+            <h3 style={{ margin: '0 2rem 0.2rem 0' }}>
+              {(KIND_LABEL[selected.kind] ?? ['🖍️', selected.kind])[0]}{' '}
+              {selected.waxel ? `“${selected.waxel.name}”` : (KIND_LABEL[selected.kind] ?? ['', selected.kind])[1]}
+            </h3>
+            {selected.waxel ? (
+              <img className="art" src={`/chain/${selected.waxel.file}.png`} alt={selected.waxel.name} />
+            ) : null}
+            <p style={{ margin: '0 0 0.4rem', fontSize: '0.85rem' }}>
+              <b>{selected.wireBytes.toLocaleString()}</b> of 4,096 bytes on the wire
+            </p>
+            <div className="meter" title={`${selected.wireBytes} / 4096 bytes`}>
+              <i style={{ width: `${Math.round((selected.wireBytes / 4096) * 100)}%` }} />
+            </div>
+            <table style={{ fontSize: '0.88rem', margin: '0.8rem 0' }}>
+              <tbody>
+                <tr>
+                  <td>signature</td>
+                  <td>
+                    <code className="pill">{selected.signature}</code>
+                  </td>
+                </tr>
+                <tr>
+                  <td>version</td>
+                  <td>
+                    {selected.version} — first wire byte{' '}
+                    <code className="pill">{selected.versionPrefix}</code>, a real
+                    SIMD-0385 transaction
+                  </td>
+                </tr>
+                <tr>
+                  <td>slot</td>
+                  <td>
+                    {selected.slot.toLocaleString()}
+                    {selected.blockTime
+                      ? ` · ${new Date(selected.blockTime * 1000).toUTCString()}`
+                      : ''}
+                  </td>
+                </tr>
+                <tr>
+                  <td>cost</td>
+                  <td>
+                    {(selected.feeLamports / 1e9).toFixed(6)} SOL fee ·{' '}
+                    {selected.computeUnits?.toLocaleString()} compute units
+                  </td>
+                </tr>
+                {selected.waxel ? (
+                  <tr>
+                    <td>account</td>
+                    <td>
+                      <code className="pill">{selected.waxel.address}</code>
+                    </td>
+                  </tr>
+                ) : null}
+              </tbody>
+            </table>
+            <b style={{ fontSize: '0.9rem' }}>what this transaction did</b>
+            <table style={{ fontSize: '0.88rem' }}>
+              <tbody>
+                {selected.instructions.map((ix, j) => (
+                  <tr key={j}>
+                    <td>
+                      <code className="pill">
+                        {ix.name}
+                        {ix.imageBytes ? `(${ix.imageBytes.toLocaleString()} B)` : ''}
+                      </code>
+                    </td>
+                    <td>{IX_EXPLAIN[ix.name] ?? ''}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            {selected.kind === 'mint' && selected.instructions.length === 3 ? (
+              <p style={{ margin: '0.7rem 0 0', fontSize: '0.85rem', opacity: 0.85 }}>
+                ☝️ all three in <b>one transaction</b> — the thing that was
+                impossible before SIMD-0385.
+              </p>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
 
       {/* ------------------------------------------------ live gallery */}
       <section>
