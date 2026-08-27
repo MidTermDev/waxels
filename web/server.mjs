@@ -158,6 +158,20 @@ async function serveStatic(res, urlPath) {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   try {
+    // Receipts rotate with every sandbox refresh — serve the source of
+    // truth (public/) rather than the copy baked into out/ at build time.
+    if (url.pathname === '/receipts.json') {
+      const body = await readFile(
+        join(fileURLToPath(new URL('.', import.meta.url)), 'public', 'receipts.json'),
+      );
+      res.writeHead(200, {
+        'content-type': 'application/json',
+        'cache-control': 'no-cache',
+        'access-control-allow-origin': '*',
+      });
+      res.end(body);
+      return;
+    }
     // The API is public read-only data; let waxels.app (and anyone else)
     // fetch it cross-origin.
     if (url.pathname === '/api/state') {

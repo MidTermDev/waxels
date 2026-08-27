@@ -22,7 +22,7 @@ start() {
     --reset --quiet \
     --ledger "$LEDGER/ledger" \
     --bind-address 127.0.0.1 \
-    --limit-ledger-size 500000 \
+    --limit-ledger-size 25000000 \
     --mint "$("$AGAVE_BIN/solana-keygen" pubkey "$HOME/.config/solana/id.json")" \
     >"$LEDGER/validator.log" 2>&1 &
   echo $! >"$PIDFILE"

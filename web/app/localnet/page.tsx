@@ -83,6 +83,13 @@ function short(sig: string) {
   return `${sig.slice(0, 8)}…${sig.slice(-8)}`;
 }
 
+// This box IS a Solana RPC: POSTs to https://localnet.waxels.app hit the
+// validator, so explorer.solana.com can browse it as a custom cluster.
+const RPC_URL = 'https://localnet.waxels.app';
+const CUSTOM = `cluster=custom&customUrl=${encodeURIComponent(RPC_URL)}`;
+const explorerTx = (sig: string) => `https://explorer.solana.com/tx/${sig}?${CUSTOM}`;
+const explorerAddr = (a: string) => `https://explorer.solana.com/address/${a}?${CUSTOM}`;
+
 export default function Localnet() {
   const [receipts, setReceipts] = useState<Receipts | null>(null);
   const [state, setState] = useState<LiveState | null>(null);
@@ -97,7 +104,14 @@ export default function Localnet() {
   }, [selected]);
 
   useEffect(() => {
-    fetch('/receipts.json').then((r) => r.json()).then(setReceipts).catch(() => {});
+    // Receipts rotate with each sandbox refresh — prefer the validator
+    // box's live copy, fall back to the one bundled with this deploy.
+    fetch(`${apiBase()}/receipts.json`)
+      .then((r) => r.json())
+      .then(setReceipts)
+      .catch(() =>
+        fetch('/receipts.json').then((r) => r.json()).then(setReceipts).catch(() => {}),
+      );
     const load = () =>
       fetch(`${apiBase()}/api/state`)
         .then((r) => r.json())
@@ -251,6 +265,10 @@ export default function Localnet() {
                   <td>signature</td>
                   <td>
                     <code className="pill">{selected.signature}</code>
+                    <br />
+                    <a href={explorerTx(selected.signature)} target="_blank" rel="noreferrer">
+                      view on explorer.solana.com ↗
+                    </a>
                   </td>
                 </tr>
                 <tr>
@@ -282,6 +300,10 @@ export default function Localnet() {
                     <td>account</td>
                     <td>
                       <code className="pill">{selected.waxel.address}</code>
+                      <br />
+                      <a href={explorerAddr(selected.waxel.address)} target="_blank" rel="noreferrer">
+                        view on explorer.solana.com ↗
+                      </a>
                     </td>
                   </tr>
                 ) : null}
@@ -350,6 +372,37 @@ export default function Localnet() {
         {offline && !state ? <p>validator offline — the gallery needs the live RPC.</p> : null}
       </section>
 
+      {/* ------------------------------------------------ custom rpc */}
+      <section>
+        <h2>
+          <span className="crayon-underline" style={{ color: 'var(--blue)' }}>
+            browse us on the real Solana Explorer
+          </span>
+        </h2>
+        <div className="card tilt-l">
+          <p style={{ marginTop: 0 }}>
+            <code className="pill">{RPC_URL}</code> is a working Solana RPC —
+            it proxies straight to the validator. Paste it into{' '}
+            <a href={`https://explorer.solana.com/?${CUSTOM}`} target="_blank" rel="noreferrer">
+              explorer.solana.com
+            </a>{' '}
+            as a <b>custom RPC URL</b> (or just{' '}
+            <a href={`https://explorer.solana.com/?${CUSTOM}`} target="_blank" rel="noreferrer">
+              <b>click here</b>
+            </a>
+            ) and watch the waxels chain with the official explorer: blocks,
+            our v1 transactions, the accounts holding the art. Every receipt
+            above has a “view on explorer.solana.com” link too.
+          </p>
+          <p style={{ marginBottom: 0, fontSize: '0.85rem', opacity: 0.8 }}>
+            note: this is an open sandbox and it resets every hour on the
+            :07 — waxel <i>addresses</i> never change (they&apos;re deterministic
+            PDAs), but transaction signatures rotate with each reset. this
+            page always shows the current ones.
+          </p>
+        </div>
+      </section>
+
       {/* ------------------------------------------------ diy */}
       <section>
         <h2>
@@ -363,7 +416,7 @@ export default function Localnet() {
           image length is a u16 at offset 133, image bytes start at 135.
           Decode any waxel yourself from raw RPC:
         </p>
-        <pre>{`curl -s <RPC> -X POST -H 'content-type: application/json' -d '{
+        <pre>{`curl -s https://localnet.waxels.app -X POST -H 'content-type: application/json' -d '{
   "jsonrpc":"2.0","id":1,"method":"getAccountInfo",
   "params":["<WAXEL_ADDRESS>", {"encoding":"base64"}]
 }' | python3 -c "
