@@ -26,6 +26,14 @@ for _ in $(seq 1 60); do
 done
 
 "$ROOT/scripts/demo.sh"
-(cd "$ROOT/client" && npx tsx src/receipts.ts)
+
+# Recapture receipts; retry in case the last transaction needs a moment.
+for attempt in 1 2 3 4 5; do
+  if (cd "$ROOT/client" && npx tsx src/receipts.ts); then
+    break
+  fi
+  echo "[refresh] receipts attempt $attempt failed; retrying in 10s"
+  sleep 10
+done
 
 echo "[refresh] done; disk: $(df -h / | tail -1 | awk '{print $4 " free"}')"

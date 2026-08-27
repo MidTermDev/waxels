@@ -76,13 +76,15 @@ interface JsonTx {
 }
 
 async function receiptFor(sig: string, kind: string, extra: Record<string, unknown> = {}) {
+  // commitment: confirmed — the default (finalized) races the demo when
+  // receipts are captured seconds after the last transaction lands.
   const json = await rpc<JsonTx | null>('getTransaction', [
     sig,
-    { encoding: 'json', maxSupportedTransactionVersion: 1 },
+    { encoding: 'json', maxSupportedTransactionVersion: 1, commitment: 'confirmed' },
   ]);
   const b64 = await rpc<{ transaction: [string, string] } | null>('getTransaction', [
     sig,
-    { encoding: 'base64', maxSupportedTransactionVersion: 1 },
+    { encoding: 'base64', maxSupportedTransactionVersion: 1, commitment: 'confirmed' },
   ]);
   if (!json || !b64) throw new Error(`transaction ${sig} not found — has the ledger rotated?`);
   const wire = Buffer.from(b64.transaction[0], 'base64');
@@ -118,7 +120,10 @@ async function main() {
   const version = await rpc<{ 'solana-core': string }>('getVersion', []);
 
   // Oldest signature on the fridge = plug_in_fridge.
-  const fridgeSigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [fridge, { limit: 100 }]);
+  const fridgeSigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [
+    fridge,
+    { limit: 100, commitment: 'confirmed' },
+  ]);
   const plugInSig = fridgeSigs[fridgeSigs.length - 1].signature;
 
   const steps: { signature: string; instructions: { name?: unknown }[] }[] = [];
@@ -140,14 +145,20 @@ async function main() {
 
   for (const w of WAXELS) {
     const addr = await waxelPda(CURATOR as Parameters<typeof waxelPda>[0], w.name);
-    const sigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [addr, { limit: 10 }]);
+    const sigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [
+      addr,
+      { limit: 10, commitment: 'confirmed' },
+    ]);
     for (const s of sigs.reverse()) {
       await push(s.signature, 'mint', { waxel: { address: addr, name: w.name, file: w.file } });
     }
   }
 
   const pfp = await pfpPda(CURATOR as Parameters<typeof pfpPda>[0]);
-  const pfpSigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [pfp, { limit: 10 }]);
+  const pfpSigs = await rpc<{ signature: string }[]>('getSignaturesForAddress', [
+    pfp,
+    { limit: 10, commitment: 'confirmed' },
+  ]);
   for (const s of pfpSigs.reverse()) {
     await push(s.signature, 'set_pfp', { pfp: { address: pfp, wallet: CURATOR } });
   }
