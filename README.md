@@ -126,6 +126,16 @@ npx tsx src/cli.ts show --name "my masterpiece" --out roundtrip.png
 npx tsx src/cli.ts pfp  --name "my masterpiece"
 ```
 
+Want the full story with pictures? Run the showcase site:
+
+```bash
+cd web && npm install && npm run dev   # → http://localhost:3000
+```
+
+Building an integration? The byte-level account layouts and instruction
+wire format live in [docs/PROTOCOL.md](docs/PROTOCOL.md) — you can render
+any waxel from raw RPC in about four lines.
+
 ## 🎨 the art
 
 Everything you see here was rendered by [`art/build.mjs`](art/build.mjs) — a
