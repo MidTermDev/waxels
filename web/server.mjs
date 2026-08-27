@@ -158,9 +158,15 @@ async function serveStatic(res, urlPath) {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, 'http://x');
   try {
+    // The API is public read-only data; let waxels.app (and anyone else)
+    // fetch it cross-origin.
     if (url.pathname === '/api/state') {
       const body = await apiState();
-      res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-cache' });
+      res.writeHead(200, {
+        'content-type': 'application/json',
+        'cache-control': 'no-cache',
+        'access-control-allow-origin': '*',
+      });
       res.end(body);
       return;
     }
@@ -175,6 +181,7 @@ const server = createServer(async (req, res) => {
       res.writeHead(200, {
         'content-type': out.mime,
         'cache-control': 'public, max-age=30',
+        'access-control-allow-origin': '*',
         'x-waxels': 'served byte-for-byte from Solana account data',
       });
       res.end(out.bytes);

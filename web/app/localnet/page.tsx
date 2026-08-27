@@ -6,6 +6,20 @@ import { useEffect, useState } from 'react';
 const FEATURE_GATE = 'txv1aq4pp281K9um3tnPgkfX8UqtFT6wcVW3hNezGLL';
 const GITHUB = 'https://github.com/MidTermDev/waxels';
 
+/**
+ * The live API is served by the box running the validator
+ * (localnet.waxels.app). When this page is hosted elsewhere (waxels.app on
+ * Vercel), call it cross-origin; when served from the box itself (or local
+ * dev against server.mjs), stay relative.
+ */
+function apiBase(): string {
+  if (typeof window === 'undefined') return '';
+  const here = window.location.hostname;
+  return here === 'localnet.waxels.app' || here === 'localhost' || here === '127.0.0.1'
+    ? ''
+    : 'https://localnet.waxels.app';
+}
+
 interface Receipt {
   kind: string;
   signature: string;
@@ -77,7 +91,7 @@ export default function Localnet() {
   useEffect(() => {
     fetch('/receipts.json').then((r) => r.json()).then(setReceipts).catch(() => {});
     const load = () =>
-      fetch('/api/state')
+      fetch(`${apiBase()}/api/state`)
         .then((r) => r.json())
         .then((s: LiveState) => {
           if (s.live) {
@@ -249,7 +263,7 @@ export default function Localnet() {
         <div className="gallery">
           {(state?.waxels ?? []).map((w) => (
             <figure key={w.address}>
-              <img src={`/api/waxel/${w.address}/image`} alt={w.name} />
+              <img src={`${apiBase()}/api/waxel/${w.address}/image`} alt={w.name} />
               <figcaption>
                 <b>“{w.name}”</b> · waxel #{w.id}
                 <br />
