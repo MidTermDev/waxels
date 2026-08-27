@@ -5,9 +5,9 @@
 <p align="center"><b>wax + pixels. crayon art, melted permanently into Solana.</b></p>
 
 <p align="center">
+  <a href="https://localnet.waxels.app"><b>🟢 live localnet explorer</b></a> ·
   <a href="https://x.com/WaxelsProtocol">𝕏 @WaxelsProtocol</a> ·
   <a href="#-quickstart">quickstart</a> ·
-  <a href="#-how-it-works">how it works</a> ·
   <a href="#-the-waxel-token">$WAXEL</a> ·
   <a href="LICENSE">MIT</a>
 </p>
