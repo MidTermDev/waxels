@@ -34,6 +34,9 @@ export default function Home() {
           <a className="btn" style={{ ['--btn' as string]: 'var(--blue)' }} href={X_URL}>
             @WaxelsProtocol ↗
           </a>
+          <a className="btn" style={{ ['--btn' as string]: 'var(--red)' }} href="/localnet">
+            🟢 live localnet explorer
+          </a>
           <a className="btn" style={{ ['--btn' as string]: 'var(--green)' }} href="#journey">
             see the proof ↓
           </a>

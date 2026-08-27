@@ -1,0 +1,163 @@
+{
+  "capturedAt": "2026-08-27T18:16:29.028Z",
+  "cluster": {
+    "rpc": "local Agave test validator",
+    "version": "4.2.0",
+    "featureGate": "txv1aq4pp281K9um3tnPgkfX8UqtFT6wcVW3hNezGLL",
+    "featureStatus": "active since slot 0"
+  },
+  "programId": "6WGNQ6jzy7TyEPHAQZzKTjoWeVqW9ciWKGtHpjpXRCFt",
+  "curator": "EtNCYkkZSqHLnLtSQQhX2p3oXsxHAjdv5tjep5iF8ZLv",
+  "fridge": "GtG657SfcA6JAzxZZPaGQE3f72vjPhR2Dw1KzUh8HCYq",
+  "steps": [
+    {
+      "kind": "plug-in",
+      "signature": "PqfVWnHqNWjzUz2JqjBWQVSPYXdfvufn5BqupRmXdeyELiXZVb5tfwaf9rAiTHcyad1j29Z78P1k2nc8Ma4bTWg",
+      "slot": 42,
+      "blockTime": 1787854452,
+      "version": 1,
+      "wireBytes": 250,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 2028,
+      "instructions": [
+        {
+          "name": "plug_in_fridge"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "38smDoPBKfQ58pHTsghP4XxSbMy1KurZ1i1EDSu4aeRL",
+        "name": "waxel the weasel",
+        "file": "waxel-the-weasel"
+      },
+      "signature": "3yQBi8vdAhaRnxr3fSB77LuakN5uSqa6x7zqsEDgGS8TXvwHkGctw3jQwU13BpEeYNyThvWjMURGUGon6vKSwJp3",
+      "slot": 44,
+      "blockTime": 1787854453,
+      "version": 1,
+      "wireBytes": 3418,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 7110,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 3082
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "set_pfp",
+      "waxel": {
+        "address": "38smDoPBKfQ58pHTsghP4XxSbMy1KurZ1i1EDSu4aeRL",
+        "name": "waxel the weasel",
+        "file": "waxel-the-weasel"
+      },
+      "signature": "3cwscVowsdUmaNBCmQT6g39XCnTDZ62KX7szF3KgZx26C4Uw777RXHUwnD849wxgnKd5RqScajpM989eUVeXxbKS",
+      "slot": 52,
+      "blockTime": 1787854456,
+      "version": 1,
+      "wireBytes": 283,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 2326,
+      "instructions": [
+        {
+          "name": "set_pfp"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "CLnTbafGx6FJhai8dAPmCj1s1ARJg7wGBsX6SukrdK29",
+        "name": "sunny day",
+        "file": "sun"
+      },
+      "signature": "3dU9obDmAkruRD3zeoWDaZETjmSY6qa3veVTTZh4HX5wjKRrkcFyG2tb1Fvro9qEoFH2VsRnqRcnprRiokLYwnMq",
+      "slot": 46,
+      "blockTime": 1787854454,
+      "version": 1,
+      "wireBytes": 1007,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 5825,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 671
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "EJ7d4CLacySdLYgD9J1HvJTBtLqrqKvr6ZENjCk6TJMX",
+        "name": "for mom",
+        "file": "heart"
+      },
+      "signature": "2tKJ4ZXzgoCzj4S62ezp678iBotzJAPdWm6CSV5KggVDBMYfo45EVENo3tNPQhmhdFexGZgjyT7sAay6id3PNacL",
+      "slot": 48,
+      "blockTime": 1787854455,
+      "version": 1,
+      "wireBytes": 949,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 6842,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 613
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "4bpwrLeF6LnHwmqP8v43dBQqVVQJxoE3HgNgWoQwUJMP",
+        "name": "to the moon",
+        "file": "rocket"
+      },
+      "signature": "2ZoUFRhup3LHWE3whd83Q6ekVsgPyKusxuqb8qxCwMq8tRRkyzXfH5vXN1tPfrT9QHeHAsDJ4wEhjZdFTnucb9MX",
+      "slot": 50,
+      "blockTime": 1787854455,
+      "version": 1,
+      "wireBytes": 958,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 6170,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 622
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    }
+  ]
+}
