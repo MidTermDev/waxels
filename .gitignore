@@ -6,3 +6,9 @@ node_modules
 test-ledger
 .yarn
 .surfpool
+
+# localnet + web artifacts
+.localnet
+web/.next
+web/out
+web/next-env.d.ts
