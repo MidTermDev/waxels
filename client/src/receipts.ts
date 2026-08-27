@@ -22,6 +22,10 @@ const WAXELS = [
   { name: 'sunny day', file: 'sun' },
   { name: 'for mom', file: 'heart' },
   { name: 'to the moon', file: 'rocket' },
+  { name: 'our house', file: 'house' },
+  { name: 'for dad', file: 'flower' },
+  { name: 'after the rain', file: 'rainbow' },
+  { name: 'brain freeze', file: 'icecream' },
 ];
 
 const IX_NAMES = ['plug_in_fridge', 'mint', 'scribble', 'wipe', 'seal', 'give', 'set_pfp'];

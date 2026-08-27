@@ -79,7 +79,14 @@ export default function Localnet() {
     const load = () =>
       fetch('/api/state')
         .then((r) => r.json())
-        .then((s: LiveState) => (s.live ? setState(s) : setOffline(true)))
+        .then((s: LiveState) => {
+          if (s.live) {
+            setState(s);
+            setOffline(false); // recover the badge when the RPC comes back
+          } else {
+            setOffline(true);
+          }
+        })
         .catch(() => setOffline(true));
     load();
     const t = setInterval(load, 5000);

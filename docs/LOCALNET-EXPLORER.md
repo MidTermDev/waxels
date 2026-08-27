@@ -40,7 +40,9 @@ Setup on a fresh box:
 # then point nginx (or anything) at 127.0.0.1:4646 and run certbot
 ```
 
-A systemd unit keeps the explorer up:
+Two systemd units keep it alive unattended: `waxels-validator` runs the
+test validator on the persistent ledger (no `--reset`, so accounts survive
+restarts and reboots), and `waxels-localnet` runs the explorer:
 
 ```ini
 [Unit]

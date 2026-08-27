@@ -34,6 +34,10 @@ step "minting the fridge gallery"
 (cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/sun.png" --name "sunny day")
 (cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/heart.png" --name "for mom")
 (cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/rocket.png" --name "to the moon")
+(cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/house.png" --name "our house")
+(cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/flower.png" --name "for dad")
+(cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/rainbow.png" --name "after the rain")
+(cd "$ROOT/client" && $CLI mint "$ROOT/assets/chain/icecream.png" --name "brain freeze")
 
 step "hanging waxel the weasel on the fridge door (pfp)"
 (cd "$ROOT/client" && $CLI pfp --name "waxel the weasel")

@@ -1,5 +1,5 @@
 {
-  "capturedAt": "2026-08-27T18:16:29.028Z",
+  "capturedAt": "2026-08-27T18:25:37.839Z",
   "cluster": {
     "rpc": "local Agave test validator",
     "version": "4.2.0",
@@ -153,6 +153,118 @@
         {
           "name": "scribble",
           "imageBytes": 622
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "9pHEKcUmG9nWWyfjovBpdkx4gyV7QzF8HMkUYpNeJFia",
+        "name": "our house",
+        "file": "house"
+      },
+      "signature": "4gMgFzJhtmBtQjL7W83rbTF9Zt5rP2fgpnvA1S9pk1PutFbfKytBSU6mcP6eYso21aiFsFTdsGeyjh8oPQmF6pRJ",
+      "slot": 1613,
+      "blockTime": 1787855109,
+      "version": 1,
+      "wireBytes": 1088,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 5825,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 752
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "DYV48ckSPxt3LVDahsw5ZpKRpaHhYd7GaK8Ujic7dkSr",
+        "name": "for dad",
+        "file": "flower"
+      },
+      "signature": "5KMytLFRqhVzTX1SkPDrMC665aDzFEGQqPYKuLz3wpV2jfHEBGgiz2GQFZyD2tgFxq43rvjr775F5BPgEHw4wM6y",
+      "slot": 1615,
+      "blockTime": 1787855110,
+      "version": 1,
+      "wireBytes": 980,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 5821,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 644
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "ArBioFtEPFUhTPhgzoyvLchk6gw85Xn2uTAiEuRFW5EL",
+        "name": "after the rain",
+        "file": "rainbow"
+      },
+      "signature": "65uWt4TciyBmce4BkCGxRHcLcj2m5Kb4ZsECviTRuBpzvr1LE6Gty8Ch7HeHdTRGsucwqcxLi1byuD1gyyBQexyh",
+      "slot": 1617,
+      "blockTime": 1787855111,
+      "version": 1,
+      "wireBytes": 1094,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 6176,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 758
+        },
+        {
+          "name": "seal"
+        }
+      ]
+    },
+    {
+      "kind": "mint",
+      "waxel": {
+        "address": "3W4zQDSeBGmW7DWgpHUxDZC3i1F9KPUhE4PeNu4dgR4A",
+        "name": "brain freeze",
+        "file": "icecream"
+      },
+      "signature": "5Tne73yrDcGw25vD8Y7ao1WRq9wQ5LGYWkoJgHb2kKbYGRLLj566qNXvSQDukjdAwfrbVTxmbrLdLWXZv63bpYhi",
+      "slot": 1619,
+      "blockTime": 1787855112,
+      "version": 1,
+      "wireBytes": 852,
+      "versionPrefix": "0x81",
+      "feeLamports": 5000,
+      "computeUnits": 6512,
+      "instructions": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "scribble",
+          "imageBytes": 516
         },
         {
           "name": "seal"

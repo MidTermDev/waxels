@@ -238,6 +238,92 @@ export function heartScene() {
   return s;
 }
 
+export function houseScene() {
+  const s = new Scene(24, 24);
+  const grass = s.region(C.grass, { angle: Math.PI / 16 });
+  const wall = s.region(C.cream, { angle: Math.PI / 2.1 });
+  const roof = s.region(C.red, { angle: Math.PI / 4.2 });
+  const chimney = s.region(C.trunk, { angle: Math.PI / 2.2 });
+  const smoke = s.region(C.cloud, { angle: Math.PI / 8, outline: false });
+  const door = s.region(C.trunk, { angle: Math.PI / 2.3 });
+  const window = s.region(C.sky, { angle: Math.PI / 4 });
+  const knob = s.region(C.sun, { outline: false });
+
+  s.rect(0, 20, 23, 23, grass);
+  s.rect(15, 4, 17, 9, chimney);
+  s.ellipse(18.5, 2.6, 1.6, 1.1, smoke);
+  s.ellipse(20.6, 1.4, 1.2, 0.9, smoke);
+  // Roof: widening rows from the apex down to the eaves.
+  for (let y = 4; y <= 11; y++) {
+    const w = 1 + ((y - 4) / 7) * 8.4;
+    s.rect(Math.round(11.5 - w), y, Math.round(11.5 + w), y, roof);
+  }
+  s.rect(5, 12, 18, 20, wall);
+  s.rect(9, 15, 13, 20, door);
+  s.ellipse(12.2, 17.6, 0.55, 0.55, knob);
+  s.rect(15, 14, 17, 16, window);
+  return s;
+}
+
+export function flowerScene() {
+  const s = new Scene(24, 24);
+  const grass = s.region(C.grass, { angle: Math.PI / 16 });
+  const stem = s.region(C.blade, { angle: Math.PI / 2 });
+  const leaf = s.region(C.canopy, { angle: Math.PI / 5 });
+  const petal = s.region(C.pink, { angle: Math.PI / 3 });
+  const heart = s.region(C.sun, { angle: Math.PI / 2.6 });
+
+  s.rect(0, 20, 23, 23, grass);
+  s.stroke(12, 13, 11.6, 21, 0.8, stem);
+  s.ellipse(9.2, 17, 2.2, 1.2, leaf);
+  s.ellipse(14.6, 18.2, 2.2, 1.2, leaf);
+  for (let i = 0; i < 6; i++) {
+    const a = (i / 6) * Math.PI * 2 + 0.5;
+    s.ellipse(12 + Math.cos(a) * 3.6, 8.5 + Math.sin(a) * 3.6, 2.5, 2.5, petal);
+  }
+  s.ellipse(12, 8.5, 2.3, 2.3, heart);
+  return s;
+}
+
+export function rainbowScene() {
+  const s = new Scene(24, 24);
+  const bands = [C.red, C.orange, C.sun, C.green, C.blue, C.violet].map((c, i) =>
+    s.region(c, { angle: Math.PI / 4 + i * 0.2 })
+  );
+  const cloud = s.region(C.cloud, { angle: Math.PI / 9 });
+  // Concentric arcs from a center just below the frame.
+  bands.forEach((id, i) => {
+    const r = 13.2 - i * 1.35;
+    for (let t = 0; t <= 44; t++) {
+      const a = Math.PI * (0.08 + (0.84 * t) / 44);
+      s.ellipse(12 + Math.cos(a) * r, 22.5 - Math.sin(a) * r, 0.85, 0.85, id);
+    }
+  });
+  s.ellipse(3.6, 20.4, 3.1, 2.1, cloud);
+  s.ellipse(20.4, 20.4, 3.1, 2.1, cloud);
+  return s;
+}
+
+export function iceCreamScene() {
+  const s = new Scene(24, 24);
+  const cone = s.region(C.trunk, { angle: Math.PI / 3.6 });
+  const scoopA = s.region(C.pink, { angle: Math.PI / 2.4 });
+  const scoopB = s.region(C.cream, { angle: Math.PI / 2.1 });
+  const cherry = s.region(C.red, { angle: Math.PI / 3 });
+  const ink = s.region(C.ink, { outline: false });
+
+  // Cone: narrowing rows down to the tip.
+  for (let y = 12; y <= 21; y++) {
+    const w = 4.4 * (1 - (y - 12) / 9.5);
+    s.rect(Math.round(12 - w), y, Math.round(12 + w), y, cone);
+  }
+  s.ellipse(12, 9.6, 4.5, 3.4, scoopA);
+  s.ellipse(12, 5.8, 3.6, 2.7, scoopB);
+  s.stroke(12.6, 2.8, 13.4, 1.6, 0.4, ink);
+  s.ellipse(12.2, 3.2, 1.1, 1.1, cherry);
+  return s;
+}
+
 export function rocketScene() {
   const s = new Scene(24, 24);
   const body = s.region(C.cloud, { angle: Math.PI / 2.2 });

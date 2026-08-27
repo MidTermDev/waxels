@@ -8,6 +8,7 @@ import { encodeRGBA, encodeIndexed } from './lib/png.mjs';
 import { renderCrayon, renderIndexed } from './lib/crayon.mjs';
 import {
   weaselScene, pfpScene, wordmarkScene, sunScene, heartScene, rocketScene,
+  houseScene, flowerScene, rainbowScene, iceCreamScene,
 } from './lib/scenes.mjs';
 
 const out = join(dirname(fileURLToPath(import.meta.url)), '..', 'assets');
@@ -43,3 +44,7 @@ chain('pfp', pfpScene(), 3, { seed: 777 });
 chain('sun', sunScene(), 3, { seed: 11 });
 chain('heart', heartScene(), 3, { seed: 22 });
 chain('rocket', rocketScene(), 3, { seed: 33 });
+chain('house', houseScene(), 3, { seed: 44 });
+chain('flower', flowerScene(), 3, { seed: 55 });
+chain('rainbow', rainbowScene(), 3, { seed: 66 });
+chain('icecream', iceCreamScene(), 3, { seed: 77 });
